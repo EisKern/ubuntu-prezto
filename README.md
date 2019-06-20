@@ -1,1 +1,1 @@
-# Docker Image Implementing Prezto
+# Ubuntu Image Implementing Prezto
