@@ -1,5 +1,5 @@
 # Base OS
-FROM ubuntu:latest
+FROM ubuntu:18.04
 
 # Creater
 # MAINTAINER EK
@@ -31,7 +31,10 @@ RUN echo "${USER}:hogehoge" | chpasswd
 # USER ${USER}
 WORKDIR ${HOME}
 
+SHELL ["/bin/zsh", "-c"]
+
 # zprezto to zsh
+RUN git config --global http.sslVerify false
 RUN git clone --recursive https://github.com/sorin-ionescu/prezto.git "${ZDOTDIR:-$HOME}/.zprezto"
 RUN setopt EXTENDED_GLOB \
   && for rcfile in "${ZDOTDIR:-$HOME}"/.zprezto/runcoms/^README.md(.N); do ln -s "${rcfile}" "${ZDOTDIR:-$HOME}/.${rcfile:t}"; done
@@ -41,6 +44,9 @@ RUN chsh -s /bin/zsh
 
 # Copy setup shell script
 # COPY ./setup.sh ${HOME}/
+
+# Change User
+USER ${USER}
 
 # Entry Point
 ENTRYPOINT ["/bin/zsh"]
